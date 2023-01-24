@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace RecruitmentTask
@@ -13,44 +7,47 @@ namespace RecruitmentTask
     internal class Program
 
     {
-        const int lowerLimit = 10;
-        const int upperLimit = 100;
-        static public int iterationsNumber = 0;
+        public const int LowerLimit = 10;
+        public const int UpperLimit = 100;
+        
         static void Main(string[] args)
         {
 
-            StreamWriter sw = new StreamWriter("C:\\Users\\agata\\Desktop\\log\\log.txt", false, Encoding.ASCII);
-            string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            
-
             var sum = 0;
-
-            TakeNumberAndCheckLimits();
-
-            for (int i = 1; i <= iterationsNumber; i++)
+            var iterationsNumber = GetIterationsNumber();
+            
+            using (var streamWriter = new StreamWriter("log.txt", false))
             {
-                if (i % 2 != 0)
+                for (int i = 1; i <= iterationsNumber; i++)
                 {
-                    sw.WriteLine(i);
-                    sum += i;
+                    if (i % 2 != 0)
+                    {
+                        streamWriter.WriteLine(i);
+                        sum += i;
+                    }
                 }
+                streamWriter.Close();
             }
 
-            sw.Close();
-            Console.WriteLine($"Result: {sum}");
+            Console.WriteLine($"Wynik: {sum}");
             Console.ReadLine();
         }
 
-        static void TakeNumberAndCheckLimits()
+        static int GetIterationsNumber()
         {
-            string chosenNumber;
+            string input;
+            int iterationsNumber = 0;
 
-            while (iterationsNumber < lowerLimit || iterationsNumber > upperLimit)
+            while (iterationsNumber < LowerLimit || iterationsNumber > UpperLimit)
             {
-                Console.WriteLine("Please give a number in range 10 to 100: ");
-                chosenNumber = Console.ReadLine();
-                Int32.TryParse(chosenNumber, out iterationsNumber);
+                Console.WriteLine("Proszę podać nr od 10 do 100:" );
+                input = Console.ReadLine();
+                int.TryParse(input, out iterationsNumber);
             }
+
+            return iterationsNumber;
         }
+
+
     }
 }
